@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, status, HTTPException, Depends
 from database import SessionLocal
 from sqlalchemy.orm import Session
@@ -64,3 +65,12 @@ async def deletar_vaga(id_vaga: int, db: Session = Depends(get_db)):
     db.delete(vaga)
     db.commit()
     return {"mensagem": "Vaga deletada com sucesso!"}
+
+@router.post('/lotes', response_model=VagaResponse, status_code=status.HTTP_201_CREATED)
+async def criar_vagas_lotes(vagas: List[VagaCreate], db: Session = Depends(get_db)):
+    lista = [Vaga(**vaga.model_dump()) for vaga in vagas]
+        
+    db.add_all(lista)
+    db.commit
+
+    return  {"mensagem": f"{len(vagas)} vagas criadas com sucesso"}
