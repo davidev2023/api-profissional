@@ -1,0 +1,9 @@
+qunado vai jogar pra algum repositorio so na primeira vez git remote add origin https://github.com/davidev2023/api-profissional
+
+git branch -M main
+git push -u origin mai
+
+git add .
+git commit -m "atualização"
+
+git push
