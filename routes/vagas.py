@@ -66,7 +66,7 @@ async def deletar_vaga(id_vaga: int, db: Session = Depends(get_db)):
     db.commit()
     return {"mensagem": "Vaga deletada com sucesso!"}
 
-@router.post('/lotes', response_model=VagaResponse, status_code=status.HTTP_201_CREATED)
+@router.post('/lotes',status_code=status.HTTP_201_CREATED)
 async def criar_vagas_lotes(vagas: List[VagaCreate], db: Session = Depends(get_db)):
     try:
         lista = [Vaga(**vaga.model_dump()) for vaga in vagas]
