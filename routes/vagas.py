@@ -68,9 +68,11 @@ async def deletar_vaga(id_vaga: int, db: Session = Depends(get_db)):
 
 @router.post('/lotes', response_model=VagaResponse, status_code=status.HTTP_201_CREATED)
 async def criar_vagas_lotes(vagas: List[VagaCreate], db: Session = Depends(get_db)):
-    lista = [Vaga(**vaga.model_dump()) for vaga in vagas]
-        
-    db.add_all(lista)
-    db.commit
-
-    return  {"mensagem": f"{len(vagas)} vagas criadas com sucesso"}
+    try:
+        lista = [Vaga(**vaga.model_dump()) for vaga in vagas]
+        db.add_all(lista)
+        db.commit()  # <-- corrigido
+        return {"mensagem": f"{len(vagas)} vagas criadas com sucesso"}
+    except Exception as e:
+        db.rollback()
+        return {"erro": f"Falha ao inserir vagas: {str(e)}"}
